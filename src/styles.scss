@@ -1,1 +1,121 @@
-/* You can add global styles to this file, and also import other style files */
+// Angular Material theme, tuned to the prototype palette (tokens defined in tailwind.css).
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$blue-palette,
+        tertiary: mat.$orange-palette,
+        // Emits light-dark() values, following `color-scheme` (light / dark mode).
+        theme-type: color-scheme,
+      ),
+      typography: (
+        plain-family: Nunito,
+        brand-family: Fredoka,
+      ),
+      density: 0,
+    )
+  );
+
+  @include mat.theme-overrides(
+    (
+      primary: #2944d6,
+      on-primary: #fff,
+      secondary: #ffd23f,
+      on-secondary: #161a3a,
+      tertiary: #ff7a59,
+      on-tertiary: #161a3a,
+      error: #e2434b,
+      on-error: #fff,
+      surface: light-dark(#fff, #1c2353),
+      on-surface: light-dark(#151a3d, #eef0ff),
+      on-surface-variant: light-dark(#5d6288, #a9aed6),
+      outline: light-dark(#e4e7f3, #2e3672),
+    )
+  );
+
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: var(--color-cobalt-deep),
+      container-text-color: #fff,
+      standard-height: 56px,
+      mobile-height: 56px,
+    )
+  );
+
+  // Pill buttons with Fredoka labels and 48px touch targets.
+  @include mat.button-overrides(
+    (
+      filled-container-shape: 9999px,
+      filled-container-height: 48px,
+      filled-horizontal-padding: 26px,
+      filled-label-text-font: var(--font-display),
+      filled-label-text-size: 18px,
+      filled-label-text-weight: 600,
+      filled-label-text-tracking: normal,
+      outlined-container-shape: 9999px,
+      outlined-container-height: 48px,
+      outlined-horizontal-padding: 26px,
+      outlined-label-text-font: var(--font-display),
+      outlined-label-text-size: 18px,
+      outlined-label-text-weight: 600,
+      outlined-label-text-tracking: normal,
+    )
+  );
+}
+
+// "Jugar", "Jugar otra vez".
+.fc-btn-dark {
+  @include mat.button-overrides(
+    (
+      filled-container-color: #161a3a,
+      filled-label-text-color: #fff,
+      filled-state-layer-color: #fff,
+      filled-ripple-color: rgba(255, 255, 255, 0.2),
+    )
+  );
+}
+
+// "Siguiente carta" / "Ver resultado": uses the accent of the current game.
+.fc-btn-next {
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--accent),
+      filled-label-text-color: #161a3a,
+      filled-container-height: 52px,
+      filled-label-text-size: 19px,
+    )
+  );
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+// "Cambiar de juego": translucent pill on the cobalt background.
+.fc-btn-ghost {
+  @include mat.button-overrides(
+    (
+      outlined-outline-color: transparent,
+      outlined-label-text-color: #fff,
+      outlined-state-layer-color: #fff,
+      outlined-ripple-color: rgba(255, 255, 255, 0.2),
+    )
+  );
+
+  // Two classes: Material's `.mdc-button { background: transparent }` is injected later.
+  &.mdc-button {
+    background-color: rgba(255, 255, 255, 0.14);
+  }
+}
+
+// Material sets `padding: 0 16px` on single-row toolbars.
+.fc-toolbar.mat-toolbar-single-row {
+  padding-inline: max(5vw, 16px);
+}
+
+// Visible focus everywhere (unlayered so it also applies to Material buttons).
+// `--focus` lets yellow surfaces switch to a dark ring.
+:focus-visible,
+.mat-mdc-button-base:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}

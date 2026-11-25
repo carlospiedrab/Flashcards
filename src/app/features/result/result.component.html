@@ -1,0 +1,55 @@
+<div class="wrap">
+  <section class="grid justify-items-center gap-3.5 text-center">
+    <div
+      class="grid size-[190px] place-content-center rounded-full bg-(--accent) text-ink shadow-[0_0_0_12px_rgba(255,255,255,.12),0_20px_40px_rgba(0,0,0,.3)]"
+    >
+      <b class="font-display text-[64px] leading-none font-bold">{{ hits() }}/{{ total }}</b>
+      <span class="font-extrabold">aciertos</span>
+    </div>
+    <h1 class="text-[clamp(32px,5vw,44px)]">{{ message() }}</h1>
+    <p class="m-0 text-[17px] opacity-90">
+      Obtuviste <strong>{{ score() }} puntos</strong> en {{ definition().title }}
+      @if (record(); as r) {
+        @if (r.isNew) {
+          · ¡Nuevo récord!
+        } @else {
+          · Récord: {{ r.best }} pts
+        }
+      }
+    </p>
+
+    <div class="flex flex-wrap justify-center gap-2.5">
+      <button mat-flat-button type="button" class="fc-btn-dark" (click)="playAgain()">
+        Jugar otra vez
+      </button>
+      <a mat-stroked-button routerLink="/" class="fc-btn-ghost">Cambiar de juego</a>
+    </div>
+
+    <h2 class="sr-only">Repaso de la partida</h2>
+    <ul
+      class="m-0 mt-3 grid w-full list-none grid-cols-[repeat(auto-fill,minmax(min(100%,220px),1fr))] gap-3 p-0 text-left"
+    >
+      @for (a of answers(); track a.card.item.id) {
+        <li
+          class="grid grid-cols-[64px_1fr] items-center gap-2.5 rounded-2xl border-l-6 bg-card p-3 text-card-ink"
+          [class.border-ok]="a.correct"
+          [class.border-bad]="!a.correct"
+        >
+          <img
+            class="aspect-[3/2] w-16 rounded-md"
+            [src]="a.card.item.image"
+            [alt]="(isFlag() ? 'Bandera de ' : 'Ilustración de ') + a.card.item.name"
+          />
+          <div>
+            <b class="block text-[15px]">
+              {{ isFlag() ? a.card.item.name + ': ' + a.card.item.answer : a.card.item.name }}
+            </b>
+            <small class="block text-[13px] leading-[1.35] text-muted">
+              {{ a.correct ? 'Acertaste' : 'Respondiste ' + a.picked }}
+            </small>
+          </div>
+        </li>
+      }
+    </ul>
+  </section>
+</div>

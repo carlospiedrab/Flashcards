@@ -1,0 +1,102 @@
+/*
+ * Tailwind CSS v4. Everything Tailwind generates (preflight included) lives in
+ * cascade layers, while Angular Material's styles are unlayered — so Material
+ * components always win over preflight resets, and preflight cannot break them.
+ * Material components are customised through their tokens in styles.scss.
+ */
+@import 'tailwindcss';
+
+/* Prototype palette. `static` keeps every variable emitted: styles.scss uses them too. */
+@theme static {
+  --font-sans: Nunito, system-ui, sans-serif;
+  --font-display: Fredoka, Nunito, sans-serif;
+
+  --color-cobalt: light-dark(#2944d6, #0f1640);
+  --color-cobalt-deep: light-dark(#2139b8, #0a1032);
+  --color-card: light-dark(#fff, #1c2353);
+  --color-card-ink: light-dark(#151a3d, #eef0ff);
+  --color-muted: light-dark(#5d6288, #a9aed6);
+  --color-line: light-dark(#e4e7f3, #2e3672);
+  --color-ink: #161a3a;
+  --color-flag: #ffd23f;
+  --color-land: #ff7a59;
+  --color-ok: #13a362;
+  --color-bad: #e2434b;
+
+  --animate-bump: bump 0.5s;
+  /* Same keyframes under another name: switching names replays the animation. */
+  --animate-bump-alt: bump-alt 0.5s;
+  --animate-deal: deal 0.45s ease-out;
+
+  @keyframes bump {
+    40% {
+      transform: scale(1.2);
+    }
+  }
+  @keyframes bump-alt {
+    40% {
+      transform: scale(1.2);
+    }
+  }
+  @keyframes deal {
+    from {
+      transform: translateX(60px) rotate(6deg);
+      opacity: 0;
+    }
+  }
+}
+
+/* Per-game accent colour, consumed as `var(--accent)` (e.g. `bg-(--accent)`). */
+@utility accent-flag {
+  --accent: var(--color-flag);
+}
+@utility accent-land {
+  --accent: var(--color-land);
+}
+
+/* Page container of the prototype (`.wrap`). */
+@utility wrap {
+  max-width: 1100px;
+  margin-inline: auto;
+  padding: clamp(24px, 4vw, 56px) max(5vw, 16px);
+}
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+    --accent: var(--color-flag);
+    --focus: var(--color-flag);
+  }
+  :root[data-theme='light'] {
+    color-scheme: light;
+  }
+  :root[data-theme='dark'] {
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: clip;
+    background-color: var(--color-cobalt);
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.12), transparent 45%),
+      radial-gradient(circle at 90% 100%, rgba(0, 0, 0, 0.18), transparent 50%);
+    color: #fff;
+    font: 16px/1.55 var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.05;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  a {
+    color: inherit;
+  }
+}

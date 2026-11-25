@@ -1,0 +1,58 @@
+<div class="wrap">
+  <section class="mx-auto grid max-w-[560px] gap-[18px]">
+    <app-game-header [title]="definition.title" [score]="score()" />
+    <app-progress-dots [total]="total" [index]="index()" [results]="results()" />
+
+    @for (card of deck(); track card.item.id) {
+      <app-flip-card [outcome]="outcome()" [picked]="answer()?.picked ?? null" [points]="points">
+        <div cardFront class="contents">
+          <span class="text-[13px] font-extrabold tracking-[.02em] text-muted">PAÍS</span>
+          <div
+            class="aspect-[3/2] w-[min(260px,80%)] overflow-hidden rounded-[10px] shadow-[0_6px_16px_rgba(0,0,0,.18),inset_0_0_0_1px_rgba(0,0,0,.08)]"
+          >
+            <img class="size-full" [src]="card.item.image" [alt]="'Bandera de ' + card.item.name" />
+          </div>
+          <div class="font-display text-[32px] font-bold max-[600px]:text-[26px]">
+            {{ card.item.name }}
+          </div>
+          <p class="m-0 font-bold text-muted">{{ definition.question }}</p>
+        </div>
+
+        @if (answer()) {
+          <div cardBack class="contents">
+            <div
+              class="aspect-[3/2] w-[90px] overflow-hidden rounded-[5px] shadow-[0_0_0_2px_rgba(255,255,255,.6)]"
+            >
+              <img
+                class="size-full"
+                [src]="card.item.image"
+                [alt]="'Bandera de ' + card.item.name"
+              />
+            </div>
+            <p class="m-0 text-[17px]">
+              La capital de {{ card.item.name }} es
+              <b class="mt-1 block font-display text-[30px] font-bold">{{ card.item.answer }}</b>
+            </p>
+          </div>
+        }
+      </app-flip-card>
+
+      <app-answer-options
+        [options]="card.options"
+        [correct]="card.item.answer"
+        [picked]="answer()?.picked ?? null"
+        (choose)="choose($event)"
+      />
+    }
+
+    @if (answer()) {
+      <button mat-flat-button #nextButton type="button" class="fc-btn-next" (click)="next()">
+        {{ isLastCard() ? 'Ver resultado' : 'Siguiente carta' }}
+      </button>
+    }
+    <p class="m-0 text-center text-[13px] opacity-70">
+      Atajos: teclas 1, 2, 3 para responder · Enter para continuar
+    </p>
+    <p class="sr-only" role="status" aria-live="polite">{{ announcement() }}</p>
+  </section>
+</div>

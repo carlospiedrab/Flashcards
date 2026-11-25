@@ -1,0 +1,49 @@
+<div class="stage">
+  <div
+    class="card h-[380px] motion-reduce:animate-none max-[600px]:h-[350px]"
+    [class.flipped]="flipped()"
+    [class.animate-deal]="!flipped()"
+    data-testid="card"
+  >
+    <div class="face border-(--accent) bg-card text-card-ink" [attr.aria-hidden]="flipped()">
+      <ng-content select="[cardFront]" />
+    </div>
+
+    <div
+      class="face face-back border-white/35 text-white"
+      [class.bg-ok]="outcome() === 'correct'"
+      [class.bg-bad]="outcome() === 'wrong'"
+      [attr.aria-hidden]="!flipped()"
+    >
+      @if (outcome(); as result) {
+        <svg class="size-16" viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="30" fill="rgba(255,255,255,.22)" />
+          @if (result === 'correct') {
+            <path
+              d="M18 33 L28 43 L47 22"
+              stroke="#fff"
+              stroke-width="7"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          } @else {
+            <path
+              d="M21 21 L43 43 M43 21 L21 43"
+              stroke="#fff"
+              stroke-width="7"
+              stroke-linecap="round"
+            />
+          }
+        </svg>
+        <div class="font-display text-[34px] font-bold">
+          {{ result === 'correct' ? '¡Correcto!' : 'Incorrecto' }}
+        </div>
+        <ng-content select="[cardBack]" />
+        <span class="rounded-full bg-white/20 px-3.5 py-1 font-extrabold">
+          {{ result === 'correct' ? '+' + points() + ' puntos' : 'Elegiste: ' + picked() }}
+        </span>
+      }
+    </div>
+  </div>
+</div>

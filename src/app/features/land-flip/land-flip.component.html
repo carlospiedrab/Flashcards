@@ -1,0 +1,49 @@
+<div class="wrap">
+  <section class="mx-auto grid max-w-[560px] gap-[18px]">
+    <app-game-header [title]="definition.title" [score]="score()" />
+    <app-progress-dots [total]="total" [index]="index()" [results]="results()" />
+
+    @for (card of deck(); track card.item.id) {
+      <app-flip-card [outcome]="outcome()" [picked]="answer()?.picked ?? null" [points]="points">
+        <div cardFront class="contents">
+          <div class="aspect-[200/140] max-h-[250px] w-full overflow-hidden rounded-2xl">
+            <!-- The alt text must not give the answer away. -->
+            <img
+              class="size-full"
+              [src]="card.item.image"
+              alt="Ilustración de un lugar emblemático"
+            />
+          </div>
+          <p class="m-0 font-bold text-muted">{{ definition.question }}</p>
+        </div>
+
+        @if (answer()) {
+          <div cardBack class="contents">
+            <p class="m-0 text-[17px]">
+              Este lugar es
+              <b class="mt-1 block font-display text-[30px] font-bold">{{ card.item.name }}</b>
+              {{ card.item.location }}
+            </p>
+          </div>
+        }
+      </app-flip-card>
+
+      <app-answer-options
+        [options]="card.options"
+        [correct]="card.item.answer"
+        [picked]="answer()?.picked ?? null"
+        (choose)="choose($event)"
+      />
+    }
+
+    @if (answer()) {
+      <button mat-flat-button #nextButton type="button" class="fc-btn-next" (click)="next()">
+        {{ isLastCard() ? 'Ver resultado' : 'Siguiente carta' }}
+      </button>
+    }
+    <p class="m-0 text-center text-[13px] opacity-70">
+      Atajos: teclas 1, 2, 3 para responder · Enter para continuar
+    </p>
+    <p class="sr-only" role="status" aria-live="polite">{{ announcement() }}</p>
+  </section>
+</div>
